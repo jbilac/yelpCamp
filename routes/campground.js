@@ -14,8 +14,14 @@ const validateCampground = (req, res, next) => {
         next();
     }
 }
+const verifiedUser = (req, res, next)=>{
+  if(!req.session.user_id){
+    return res.redirect('/login');
+  }
+  next();
+}
 
-router.get('/', catchAsync(async (req, res) => {
+router.get('/', verifiedUser, catchAsync(async (req, res) => {
     const campgrounds = await Campground.find({});
     if(!req.session.user_id){
       res.redirect('/login');
@@ -23,11 +29,12 @@ router.get('/', catchAsync(async (req, res) => {
     }
     res.render('campgrounds/index', { campgrounds })
 }))
-router.get('/new', (req, res) => {
+router.get('/new', verifiedUser, (req, res) => {
     res.render('campgrounds/new');
 })
 
-router.get('/:id/edit', catchAsync(async (req, res) => {
+
+router.get('/:id/edit', verifiedUser, catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     if (!campground) {
         req.flash('error', 'Edit Error! Cannot find that campground')
@@ -36,16 +43,16 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
     res.render('campgrounds/edit', { campground });
 }))
 
-
-router.get('/:id', catchAsync(async (req, res) => {
+router.get('/:id', verifiedUser, catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate('reviews');
 
     if (!campground) {
         req.flash('error', 'Cannot find that campground')
         return res.redirect('/campgrounds');
     }
-    res.render('campgrounds/show');
+    res.render('campgrounds/show', {campground});
 }))
+
 
 router.put('/:id', validateCampground, catchAsync(async (req, res, next) => {
     const campground = await Campground.findByIdAndUpdate(req.params.id, { ...req.body.campground });

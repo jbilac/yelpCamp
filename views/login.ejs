@@ -1,12 +1,10 @@
-<%-layout('layout/boilerplate') %>
+<%-layout('layout/start') %>
 <form class="form-control w-25 mx-auto" action="/login" method="post">
   <h2>Login</h2>
   <label for="username">Username</label>
   <input class="form-control" type="text" name="user[username]" id="username">
   <label for="password">Password</label>
   <input class="form-control" type="password" name="user[password]" id="password">
-  <button type="submit" class="btn btn-success mt-2" name="button">Login</button>
+  <button type="submit" class="btn btn-primary mt-2" name="button">Login</button>
+  <button type="button" class="btn btn-success mt-2"><a href="/register" class="text-decoration-none text-white">Create new account</a></button>
 </form>
-<div class="d-flex justify-content-center">
-    <a class="text-decoration-none text-primary" href="/register">Sign up!</a>
-</div>
