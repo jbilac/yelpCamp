@@ -7,6 +7,7 @@ const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const { default: next } = require('next');
+const bcrypt = require('bcrypt');
 
 const campgrounds = require('./routes/campground');
 const reviews = require('./routes/review');
@@ -57,10 +58,34 @@ app.use('/campgrounds', campgrounds);
 app.use('/campgrounds/:id/reviews', reviews);
 
 
+
 app.get('/', (req, res) => {
     res.render("home")
 })
-
+app.get('/register', (req, res)=>{
+  res.render('register');
+})
+app.post('/register',async (req, res)=>{
+  const {username, password} = req.body.user;
+  const user = await User.findOne({username});
+  const validPassword = await bcrypt.compare(password, user.password);
+  if(!validPassword){
+    req.session.user_id = user.id;
+    res.redirect('/campgrounds');
+  }
+})
+app.get('/login', (req, res)=>{
+  res.render('login');
+})
+app.post('/login',async (req, res)=>{
+  const {username, password} = req.body.user;
+  const user = await User.findOne({username});
+  const validPassword = await bcrypt.compare(password, user.password);
+  if(!validPassword){
+    req.session.user_id = user.id;
+    res.redirect('/campgrounds');
+  }
+})
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page not found', 404));
 })

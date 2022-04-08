@@ -1,7 +1,7 @@
 {
-  "name": "yelpcampjakov",
+  "name": "y",
   "version": "1.0.0",
-  "description": "",
+  "description": "Learning repo",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "connect-flash": "^0.1.1",
     "ejs": "^3.1.6",
     "ejs-mate": "^3.0.0",
@@ -17,9 +18,18 @@
     "express-session": "^1.17.2",
     "joi": "^17.6.0",
     "method-override": "^3.0.0",
-    "mongoose": "^6.2.7",
+    "mongoose": "^6.2.10",
     "next": "^12.1.2",
+    "nodemon": "^2.0.15",
     "unsplash-js": "^7.0.15",
     "unsplash-source-node": "^1.2.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbilac/yelpCamp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jbilac/yelpCamp/issues"
+  },
+  "homepage": "https://github.com/jbilac/yelpCamp#readme"
 }
