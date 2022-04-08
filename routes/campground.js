@@ -17,6 +17,10 @@ const validateCampground = (req, res, next) => {
 
 router.get('/', catchAsync(async (req, res) => {
     const campgrounds = await Campground.find({});
+    if(!req.session.user_id){
+      res.redirect('/login');
+      return;
+    }
     res.render('campgrounds/index', { campgrounds })
 }))
 router.get('/new', (req, res) => {

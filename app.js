@@ -8,7 +8,7 @@ const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const { default: next } = require('next');
 const bcrypt = require('bcrypt');
-
+const User = require('./models/user');
 const campgrounds = require('./routes/campground');
 const reviews = require('./routes/review');
 
@@ -60,19 +60,19 @@ app.use('/campgrounds/:id/reviews', reviews);
 
 
 app.get('/', (req, res) => {
-    res.render("home")
+    res.redirect("/login")
 })
 app.get('/register', (req, res)=>{
   res.render('register');
 })
 app.post('/register',async (req, res)=>{
   const {username, password} = req.body.user;
-  const user = await User.findOne({username});
-  const validPassword = await bcrypt.compare(password, user.password);
-  if(!validPassword){
-    req.session.user_id = user.id;
-    res.redirect('/campgrounds');
-  }
+  const hash = await bcrypt.hash(password, 12);
+  const user = new User({username, password: hash});
+  await user.save();
+  res.redirect('/campgrounds');
+
+
 })
 app.get('/login', (req, res)=>{
   res.render('login');
@@ -82,9 +82,15 @@ app.post('/login',async (req, res)=>{
   const user = await User.findOne({username});
   const validPassword = await bcrypt.compare(password, user.password);
   if(!validPassword){
-    req.session.user_id = user.id;
-    res.redirect('/campgrounds');
+    return res.redirect('/campgrounds');
   }
+  req.session.user_id = user._id;
+  res.redirect('/campgrounds');
+
+})
+app.get('/logout', (req, res)=>{
+  req.session.destroy();
+  res.redirect('/login');
 })
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page not found', 404));
