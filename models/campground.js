@@ -23,6 +23,9 @@ const CampgroundSchema = new Schema({
         type: String,
         required: true
     },
+    rating: {
+        type: Number,
+    },
     reviews: [
         {
             type: Schema.Types.ObjectId,

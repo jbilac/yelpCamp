@@ -5,15 +5,16 @@
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
+          <div class="collapse navbar-collapse pb-4 pb-lg-0" id="navbarNavAltMarkup">
+            <div class="navbar-nav mb-2 mb-lg-0">
               <a class="nav-link active" aria-current="page" href="/">Home</a>
               <a class="nav-link" href="/campgrounds">Campgrounds</a>
-              <a class="nav-link" href="/campgrounds/new">New campground</a>
-
+              <% if (username == 'admin') { %>
+                <a class="nav-link" href="/campgrounds/new">New campground</a>
+              <% } %>
             </div>
-
-              <a class="nav-link ms-auto text-secondary" href="/logout">Logout</a>
+              <a class="nav-link p-0 ms-auto text-danger" href="/logout"><i class="bi bi-file-person fs-5"></i> <%= username %> | Logout</a>
+              
 
           </div>
         </div>
