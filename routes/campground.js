@@ -45,12 +45,12 @@ router.get('/:id/edit', verifiedUser, catchAsync(async (req, res) => {
 
 router.get('/:id', verifiedUser, catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate('reviews');
-
+    const user = req.session.user_id;
     if (!campground) {
         req.flash('error', 'Cannot find that campground')
         return res.redirect('/campgrounds');
     }
-    res.render('campgrounds/show', {campground});
+    res.render('campgrounds/show', {campground, user});
 }))
 
 
