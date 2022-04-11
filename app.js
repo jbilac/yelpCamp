@@ -69,13 +69,15 @@ app.get('/register', (req, res) => {
 })
 app.post('/register', async (req, res) => {
   const { username, password } = req.body.user;
-  if (username == 'admin') {
-    req.flash('error', 'Cannot use admin for username. Try with something else!')
+  const temp = await User.findOne({username});
+  if (username == '' || temp) {
+    req.flash('error', 'Try with other username!')
     return res.redirect('/register');
   }
   const hash = await bcrypt.hash(password, 12);
   const user = new User({ username, password: hash });
   await user.save();
+  req.flash('success', `Successfully created new user (${username})`);
   res.redirect('/campgrounds');
 
 
@@ -95,10 +97,8 @@ app.post('/login', async (req, res) => {
     req.flash('error', 'Login failed. Try again!');
     return res.redirect('/login');
   }
-  /* const isAdmin = (username == 'admin') ? true : false; */
   req.session.username = username;
   req.session.user_id = user._id;
-  /* req.session.isAdmin = isAdmin; */
   res.redirect('/campgrounds');
 })
 app.get('/logout', (req, res) => {

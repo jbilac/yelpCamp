@@ -28,8 +28,9 @@ router.get('/', verifiedUser, catchAsync(async (req, res) => {
         return res.redirect('/login');
 
     }
-
-    res.render('campgrounds/index', { campgrounds, ...req.session })
+    const id = req.session.user_id;
+    const username = req.session.username;
+    res.render('campgrounds/index', { campgrounds, id, username })
 }))
 router.get('/new', verifiedUser, (req, res) => {
     res.render('campgrounds/new', { ...req.session });
@@ -73,7 +74,6 @@ router.put('/:id', validateCampground, catchAsync(async (req, res, next) => {
 }))
 
 router.post('/', validateCampground, catchAsync(async (req, res, next) => {
-    /*  if (!req.body.campground) throw new ExpressError('Invalid campground Data!', 400); */
     const campground = new Campground(req.body.campground);
     await campground.save();
     req.flash('success', 'Successfully created new campgorund!');
