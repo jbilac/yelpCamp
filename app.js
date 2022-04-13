@@ -1,16 +1,18 @@
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
-const ExpressError = require('./utils/ExpressError');
+const bcrypt = require('bcrypt');
 const methodOverride = require('method-override');
 const { default: next } = require('next');
-const bcrypt = require('bcrypt');
+
+const path = require('path');
+const ExpressError = require('./utils/ExpressError');
 const User = require('./models/user');
 const campgrounds = require('./routes/campground');
 const reviews = require('./routes/review');
+
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
   useNewUrlParser: true,

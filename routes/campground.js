@@ -28,9 +28,9 @@ router.get('/', verifiedUser, catchAsync(async (req, res) => {
         return res.redirect('/login');
 
     }
-    const id = req.session.user_id;
-    const username = req.session.username;
-    res.render('campgrounds/index', { campgrounds, id, username })
+    const {user_id, username } = req.session;
+
+    res.render('campgrounds/index', { campgrounds, user_id, username })
 }))
 router.get('/new', verifiedUser, (req, res) => {
     res.render('campgrounds/new', { ...req.session });
